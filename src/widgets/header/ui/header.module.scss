@@ -1,0 +1,54 @@
+.header {
+
+  background: var(--color-white);
+
+  .main {
+
+    padding-top: 25px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+  }
+
+  .main.withTop {
+    
+    padding-top: 0 !important;
+    padding-bottom: 8px;
+
+  }
+
+  .back {
+
+    background: none;
+    border: none;
+    padding-left: 0;
+    padding-right: 100px;
+    margin-left: -10px;
+
+  }
+
+  h3 {
+
+    margin-top: 6px;
+
+  }
+
+  .avatar {
+
+    border-radius: 50%;
+    overflow: hidden;
+    width: 48px;
+    height: 48px;
+
+    img {
+      
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      
+    }
+  }
+
+}

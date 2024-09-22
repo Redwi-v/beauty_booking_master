@@ -1,0 +1,35 @@
+.button {
+ 
+  margin: auto;
+
+  width: 100%;
+
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: none;
+
+  background: var(--color-stone-300);
+  font-weight: 500;
+
+  color: #797979;
+
+  position: static !important;
+
+  
+  &.blue {
+
+
+    background: var(--color-blue);
+    color: var(--color-white);
+
+
+  }
+
+  &:disabled {
+
+    opacity: .6;
+    pointer-events: none;
+
+  }
+
+}

@@ -1,0 +1,210 @@
+@import './variables.scss';
+@import './tailwind.scss';
+@import './text.scss';
+
+/* СБРОС СТАНДАРТНЫХ СТИЛЕЙ */
+*,
+::after,
+::before {
+ 
+  outline: 0 !important;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
+
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+body,
+html {
+ 
+  cursor: default;
+  min-height: 100%;
+  user-select: none;
+  font-display: swap;
+  -o-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  background: var(--color-white) !important;
+
+  font-family: var(--font-roboto);
+
+}
+
+.container {
+  
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 15px;
+  
+}
+ 
+body,
+textarea,
+input,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+ 
+  margin: 0;
+  padding: 0;
+ 
+}
+ 
+button,
+input,
+select,
+textarea { font-family: inherit; }
+ 
+textarea { resize: vertical; }
+ 
+a,
+a:hover,
+a:visited {
+ 
+  text-decoration: none;
+  color: inherit !important;
+  font-family: inherit !important;
+
+}
+
+button {
+  cursor: pointer;
+}
+
+//
+
+.DatePicker {
+
+  position: relative;
+  margin: 0 auto;
+  margin-top: 32px;
+
+}
+
+.DatePicker__input {
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.DatePicker__input:focus {
+  outline: none;
+}
+
+.DatePicker__input--invalid {
+  border-color: red !important;
+  div {
+    color: red;
+  }
+}
+
+.DatePicker__popup {
+}
+
+.CalendarPanel__header {
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 7px;
+
+  button {
+    background: none;
+    border: none;
+  }
+  button:last-child {
+    transform: rotate(180deg);
+  }
+
+}
+
+.CalendarPanel__date {
+  text-align: center;
+}
+
+.CalendarPanel__content {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  height: 90vw;
+
+  color: var(--color-stone-400);
+
+}
+
+.CalendarPanel__buttons {
+  display: flex;
+  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+
+}
+
+.CalendarPanel__buttons-right,
+.CalendarPanel__buttons-left {
+  display: flex;
+  gap: 8px;
+  margin: 0 8px;
+}
+
+.CalendarPanelItem {
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.CalendarPanelItem--today div{
+  color: var(--color-blue) !important;
+
+}
+
+.CalendarPanelItem__date {
+  border-radius: 50%;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-black) !important;
+
+}
+
+.CalendarPanelItem--selected  {
+  background-color: var(--color-blue);
+  div {
+    color: white !important;
+  }
+}
+
+.CalendarPanelItem--not-current .CalendarPanelItem__date {
+  opacity: 0.5;
+}
+
+.CalendarPanelItem--not-in-range {
+  cursor: not-allowed;
+}
+
+.CalendarPanelItem--not-in-range .CalendarPanelItem__date {
+  opacity: 0.5;
+}

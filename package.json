@@ -1,0 +1,29 @@
+{
+  "name": "beauty_booking_master",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "beauty_booking_master": "file:",
+    "clsx": "^2.1.1",
+    "moment": "^2.30.1",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-cookie": "^7.1.4",
+    "react-dom": "^18",
+    "sass": "^1.77.6",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}

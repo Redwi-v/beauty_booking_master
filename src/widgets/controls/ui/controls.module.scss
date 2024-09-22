@@ -1,0 +1,17 @@
+.controls {
+
+  display: flex;
+  gap: 14px;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  
+  background: var(--color-white);
+  
+  box-shadow: 0 -2px 23px 0 rgba(0, 0, 0, 0.1);
+  padding: 16px 20px 32px 20px;
+
+}

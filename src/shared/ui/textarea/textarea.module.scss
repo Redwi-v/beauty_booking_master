@@ -1,0 +1,41 @@
+
+.wrapper {
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .label {
+
+    color: var(--color-grey);
+    font-size: 14px;
+
+    span {
+      
+      color: var(--color-red);
+      
+    }
+
+  }
+
+  .textArea {
+
+    height: 125px;
+    padding: 10px 16px;
+    box-shadow: 0 1px 2px 0 rgba(77, 64, 85, 0.1);
+    border-radius: 4px;
+    border: 1px solid var( --color-stone-300);
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 143%;
+
+    &::placeholder {
+
+      color: var( --color-stone-300);
+
+    }
+
+  }
+
+}

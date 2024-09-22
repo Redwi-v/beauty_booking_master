@@ -1,0 +1,80 @@
+.link {
+
+  text-align: center;
+  height: 253px;
+
+  background-image: url('/images/blue_bg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding-top: 24px;
+
+  &::after {
+    content: '';
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    height: 201px;
+    z-index: 1;
+    background: var(--color-blue);
+
+  }
+
+  img,
+  .info {
+    z-index: 2;
+  }
+
+  .logo {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  h1,
+  h3 {
+    color: var(--color-white) !important;
+  }
+
+  h1 {
+
+    margin-top: 16px !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+
+  }
+
+
+  h3 {
+
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    color: #d9d9d9 !important;
+    margin-top: 8px;
+
+  }
+
+  .reviews {
+
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .stars {
+      display: flex;
+      gap: 4px;
+    }
+
+    .count {
+
+      color: var(--color-white) !important;
+
+    }
+
+  }
+
+}

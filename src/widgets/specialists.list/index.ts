@@ -1,0 +1,1 @@
+export {  SpecialistsList } from './ui/specialists.list'
