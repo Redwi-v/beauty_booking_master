@@ -5,13 +5,16 @@ const nextConfig = {
 
   env: {
 
+    API_URL: 'https://api.mybeautybooking.ru'
+
+
     //Dev
 
-    API_URL: 'https://beauty-back.ru.tuna.am'
+    // API_URL: 'https://beauty-back.ru.tuna.am'
 
   },
   images: {
-    domains: ['f1.dikidi.net', 'gallery.alexandersakulin.com', "n1s1.hsmedia.ru", 'localhost', 'beauty-back.ru.tuna.am']
+    domains: ['f1.dikidi.net', 'gallery.alexandersakulin.com', "n1s1.hsmedia.ru", 'localhost', 'beauty-back.ru.tuna.am', 'api.mybeautybooking.ru']
   }
 };
 
