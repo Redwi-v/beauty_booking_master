@@ -1,23 +1,34 @@
-import axios, { AxiosError } from 'axios'
-import { error } from 'console'
-import { Cookies } from 'react-cookie'
+import axios, { AxiosError } from 'axios';
+import { Cookies } from 'react-cookie';
 
-export const cookies = new Cookies()
-
+export const cookies = new Cookies();
 
 export const apiInstance = axios.create({
-  
-  baseURL: 'https://mybeautybooking.ru:8080/api/v1',
-  timeout: 10000,
-  
-})
+	baseURL: process.env.API_URL,
+	timeout: 10000,
+});
 
-apiInstance.interceptors.response.use(( response ) => {
+export const getFileUrl = (fileName: string) => `${process.env.API_URL}/files/${fileName}`;
 
-  return response
+apiInstance.interceptors.response.use(
+	response => {
+		return response;
+	},
+	(error: AxiosError) => {
+		return Promise.reject(error.response?.data);
+	},
+);
 
-}, ( error: AxiosError ) => {
+export const objectToForm = (body: { [key: string]: any }) => {
+	const dataForm = new FormData();
+	for (let key in body) {
+		//@ts-ignore
 
-  return Promise.reject( error.response?.data );
+		if (body[key] === undefined) {
+		} else {
+			dataForm.append(key, body[key]);
+		}
+	}
 
-})
+	return dataForm;
+};

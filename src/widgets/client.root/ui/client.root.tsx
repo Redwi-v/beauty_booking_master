@@ -1,25 +1,20 @@
 'use client'
 
-import { UserApi } from "@/shared/api";
-import { FC,  ReactNode, useEffect } from "react";
-import { userActiveUserStore } from "../model/active.user.store";
+import { mastersApi } from '@/shared/api/masters';
+import WebApp from '@twa-dev/sdk';
+import { useRouter } from 'next/navigation';
+import { FC, useEffect } from 'react';
+import { useQuery } from 'react-query';
 
+export const ClientRoot: FC = () => {
+	const { data, isFetching } = useQuery({
+		queryKey: ['ActiveUser'],
+		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
+	});
 
-export const ClientRoot:FC = () => {
+	const router = useRouter();
 
-  const setUser = userActiveUserStore( state => state.setUser )
+	if (!data?.data.id && !isFetching) router.push('/no_salon_user');
 
-  useEffect(() => {
-
-    UserApi.signIn().then( res => {
-
-      setUser( res.data.user )
-
-    })
-
-  }, [])
-
-
-  return null
-
-}
+	return null;
+};

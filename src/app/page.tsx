@@ -1,28 +1,30 @@
-import { HomeView } from "@/views/home";
-
-const STUDIO_TEST_DATA = {
-  
-  name: 'Екатерина Петровна',
-  profession: 'Стилист-парикмахер',
-  logo: 'https://gallery.alexandersakulin.com/storage/app/uploads/public/8e8/943/e0a/thumb__0_800_0_0_auto.jpg',
-  id: 1,
-  rating: {
-    reviewsCount: 20,
-    rating: 20,
-  }
-
-}
+'use client';
+import { getFileUrl } from '@/shared/api/instance/instance';
+import { mastersApi } from '@/shared/api/masters';
+import { HomeView } from '@/views/home';
+import WebApp from '@twa-dev/sdk';
+import { useQuery } from 'react-query';
 
 export default function Home() {
+	const { data, isFetching } = useQuery({
+		queryKey: ['ActiveUser'],
+		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
+	});
 
-  return (
+	const STUDIO_TEST_DATA = {
+		name: data?.data.name + ' ' + data?.data.lastName,
+		profession: data?.data.speciality || '',
+		logo: data?.data.avatar ? getFileUrl(data?.data.avatar) : '/images/no_avatar.jpg',
+		id: 1,
+		rating: {
+			reviewsCount: 20,
+			rating: 20,
+		},
+	};
 
-    <>
-
-      <HomeView studioInfo = { STUDIO_TEST_DATA } />
-
-    </>
-
-  );
-
+	return (
+		<>
+			<HomeView studioInfo={STUDIO_TEST_DATA} />
+		</>
+	);
 }

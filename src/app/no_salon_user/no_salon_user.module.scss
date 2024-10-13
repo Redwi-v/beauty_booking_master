@@ -1,0 +1,22 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  flex-direction: column;
+  padding: 40px;
+
+  font-size: 20px;
+
+  span {
+    margin-top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color .3s;
+  }
+
+  span:hover {
+    color: var(--color-blue);
+  }
+}

@@ -1,0 +1,36 @@
+.main {
+
+  h2 {
+    margin-top: 8px;
+  }
+
+  .activeDay {
+    background: var(--color-blue);
+    color: #fff;
+  }
+
+  .weekDays {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+
+    button{
+      border-radius:5px;
+      border: none;
+      font-size: 18px;
+      padding: 8px 16px;
+      text-transform: uppercase;
+    }
+  }
+
+  .set_work_time {
+    display: flex;
+    margin-top: 20px;
+    gap: 10px;
+    span {
+      margin-top: 10px;
+    }
+  }
+
+}

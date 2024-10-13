@@ -1,81 +1,168 @@
-'use client'
-import { Button, Input, buttonTypes } from "@/shared/ui";
-import { Controls } from "@/widgets/controls";
-import s from '../specialist.module.scss'
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+'use client';
+import { Button, Input, buttonTypes } from '@/shared/ui';
+import { Controls } from '@/widgets/controls';
+import s from '../specialist.module.scss';
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useMutation, useQuery } from 'react-query';
+import { mastersApi } from '@/shared/api/masters';
+import WebApp from '@twa-dev/sdk';
+import { IUpdateMasterBody } from '@/shared/api/masters/types';
+import { getFileUrl } from '@/shared/api/instance/instance';
+import { useRouter } from 'next/navigation';
+
+type Inputs = {
+	name: string;
+	last_name: string;
+	specialist: string;
+};
 
 export default function Page() {
+	const [image, setImage] = React.useState<undefined | File>();
+	const imageRef = React.useRef(null);
+	const router = useRouter()
 
-  const [ image, setImage ] = React.useState( "" );
-  const imageRef = React.useRef( null );
+	function useDisplayImage() {
+		const [result, setResult] = React.useState('');
 
-  function useDisplayImage() {
-    const [ result, setResult ] = React.useState( "" );
+		function uploader(e: any) {
+			if (typeof e === 'string') return setResult(e);
 
-    function uploader( e: any ) {
-      const imageFile = e.target.files[ 0 ];
+			const imageFile = e.target.files[0];
 
-      const reader = new FileReader();
-      reader.addEventListener( "load", ( e: any ) => {
-        setResult( e.target.result );
-      } );
+			const reader = new FileReader();
+			reader.addEventListener('load', (e: any) => {
+				setResult(e.target.result);
+			});
 
-      reader.readAsDataURL( imageFile );
-    }
+			reader.readAsDataURL(imageFile);
+		}
 
-    return { result, uploader };
-  }
+		return { result, uploader };
+	}
 
-  const { result, uploader } = useDisplayImage();
+	const {
+		register,
+		handleSubmit,
+		watch,
+		setValue,
+		formState: { errors },
+	} = useForm<Inputs>();
 
-  return (
+	const onSubmit: SubmitHandler<Inputs> = data => {
+		const { name, last_name, specialist } = data;
 
-    <div>
+		const form: IUpdateMasterBody = {
+			name,
+			lastName: last_name,
+			speciality: specialist,
+			image: image,
+		};
 
-      <Link className={ s.back } href={ '/profile' } >
+		updateMasterMutation.mutate(form);
+	};
 
-        <Image width={ 40 } height={ 40 } alt="back" src={ '/icons/arrow.svg' } />
+	const { result, uploader } = useDisplayImage();
 
-      </Link>
+	// api
+	const { data: activeMaster } = useQuery({
+		queryKey: ['ActiveMaster'],
+		queryFn: () => mastersApi.getOneByTgId(+WebApp.initDataUnsafe.user?.id!),
+		onSuccess: activeMaster => {
+			setValue('name', activeMaster.data.name);
+			setValue('last_name', activeMaster.data.lastName);
+			setValue('specialist', activeMaster.data.speciality);
 
-      <div className={ `${ s.main_data } container` }>
+			if (!activeMaster.data.avatar) return;
 
-        <div className={ s.image_preview }>
-          <label className={ s.input_preview }>
-            <input
-              type="file"
-              onChange={ ( e: any ) => {
-                setImage( e.target.files[ 0 ] );
-                uploader( e );
-              } }
-            />
+			uploader(getFileUrl(activeMaster.data.avatar));
+		},
+	});
 
-            <div className={ s.image }>
+	const updateMasterMutation = useMutation({
+		mutationFn: (data: IUpdateMasterBody) => mastersApi.update(activeMaster?.data.id!, data),
+		onSuccess: () => {
+			router.push('/')
+		}
+	});
+	//--
 
-              { result && <img className={ s.preview } ref={ imageRef } src={ result } alt="" /> }
-              <Image className={ s.icon } alt="photo" fill src={ '/icons/photo.svg' } />
+	return (
+		<div>
+			<Link
+				className={s.back}
+				href={'/'}
+			>
+				<Image
+					width={40}
+					height={40}
+					alt='back'
+					src={'/icons/arrow.svg'}
+				/>
+			</Link>
 
-            </div>
-          </label>
+			<div className={`${s.main_data} container`}>
+				<label className={s.image_preview}>
+					<div className={s.input_preview}>
+						<input
+							type='file'
+							onChange={(e: any) => {
+								setImage(e.target.files[0]);
+								uploader(e);
+							}}
+						/>
 
-          <div className={ s.text }>
-            <span>Фотография профиля</span>
-            <span>загрузить фото</span>
-          </div>
-        </div>
+						<div className={s.image}>
+							{result && (
+								<img
+									className={s.preview}
+									ref={imageRef}
+									src={result}
+									alt=''
+								/>
+							)}
+							<Image
+								className={s.icon}
+								alt='photo'
+								fill
+								src={'/icons/photo.svg'}
+							/>
+						</div>
+					</div>
 
-        <Input label="Имя" className={ s.input } inputParams={ { placeholder: 'Екатерина Петрова' } } />
-        <Input label="Специалист" className={ s.input } inputParams={ { placeholder: 'Стилист-парикмахер' } } />
+					<div className={s.text}>
+						<span>Фотография профиля</span>
+						<span>загрузить фото</span>
+					</div>
+				</label>
 
-      </div>
+				<Input
+					label='Имя'
+					className={s.input}
+					inputParams={{ ...register('name'), placeholder: 'Екатерина' }}
+				/>
+				<Input
+					label='Фамилия'
+					className={s.input}
+					inputParams={{ ...register('last_name'), placeholder: 'Петрова' }}
+				/>
+				<Input
+					label='Специалист'
+					className={s.input}
+					inputParams={{ ...register('specialist'), placeholder: 'Стилист-парикмахер' }}
+				/>
+			</div>
 
-      <Controls>
-        <Button type={ buttonTypes.blue } buttonParams={ {} }>сохранить</Button>
-      </Controls>
-    </div>
-
-  );
-
+			<Controls>
+				<Button
+					type={buttonTypes.blue}
+					buttonParams={{ onClick: handleSubmit(onSubmit) }}
+				>
+					сохранить
+				</Button>
+			</Controls>
+		</div>
+	);
 }

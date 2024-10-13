@@ -9,32 +9,24 @@ interface NavigationListProps {
 
 // FIXME: Убрать ели переиспользуем 
 const data = [
+	{
+		href: '/profile',
+		title: 'Личные данные',
+		icon: '/icons/peoples.svg',
+	},
 
-  {
+	{
+		href: '/schedule',
+		title: 'График работы',
+		icon: '/icons/list.svg',
+	},
 
-    href: '/profile',
-    title: 'Личные данные',
-    icon: '/icons/peoples.svg',
-
-  },
-
-  {
-
-    href: '/schedule',
-    title: 'График работы',
-    icon: '/icons/list.svg',
-
-  },
-
-  {
-
-    href: '/users.booking',
-    title: 'Запись клиентов',
-    icon: '/icons/calendar.svg',
-
-  },
-
-]
+	{
+		href: '/booking',
+		title: 'Запись клиентов',
+		icon: '/icons/calendar.svg',
+	},
+];
  
 export const NavigationList: FC<NavigationListProps> = () => {
 

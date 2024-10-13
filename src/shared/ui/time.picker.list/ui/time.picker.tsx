@@ -4,96 +4,53 @@ import s from './time.picker.module.scss'
 import moment, { Moment } from 'moment'
 
 interface TimeListPickerProps {
-
-  date: Moment,
-  startTime: string
-  endTime: string,
-  setTime?: ( time: string ) => void
-  defaultValue?: string
-
+	steps: string[];
+	setTime?: (time: string) => void;
+	time?: string;
 }
 
-export const TimeListPicker: FC<TimeListPickerProps> = ( props ) => {
+export const TimeListPicker: FC<TimeListPickerProps> = props => {
+	const { steps, setTime, time } = props;
 
-  const { date, endTime, startTime, setTime, defaultValue } = props 
+	return (
+		<div className={s.time_picker}>
+			<h2 className='h2'>Время записи</h2>
 
-  const times = getTimes( startTime, endTime )
-
-
-  const [ activeButton, setActive ] = useState<number | null>()
-
-  
-  useEffect(() => {
-
-    const defaultIndex = times.findIndex( time => defaultValue == time || console.log(defaultValue))
-
-    setActive(defaultIndex)
-
-  }, [ defaultValue ])
-
-  useEffect(() => {
-
-    setTime && setTime( times[ activeButton || 0 ] )
-
-  }, [ activeButton ])
-
-
-  return (
-
-    <div className={s.time_picker}>
-
-      <h2 className="h2">Время записи</h2>
-
-      <ul className={`${s.list} flex`}>
-
-        { times.map((time, index) => (
-
-          <li key={ index }>
-
-            <button 
-
-              onClick = {() => setActive(index)} 
-              className = {`${ s.button } ${ activeButton === index && s.active }`}
-
-            >
-              { time }
-            </button>
-
-          </li>
-
-        ))}
-
-      </ul>
-
-    </div>
-
-  );
-
-}
+			<ul className={`${s.list} flex`}>
+				{steps.map((stepTime, index) => (
+					<li key={index}>
+						<button
+							onClick={() => setTime?.(stepTime)}
+							className={`${s.button} ${time === stepTime && s.active}`}
+						>
+							{stepTime}
+						</button>
+					</li>
+				))}
+			</ul>
+		</div>
+	);
+};
 
 function getTimes(start: string, end: string): string[] {
+	let result: string[] = [];
+	let current = moment(start, 'HH:mm');
 
-  let result: string[] = [];
-  let current = moment(start, 'HH:mm');
+	const endTime = {
+		hours: end.split(':')[0],
+		minutes: end.split(':')[1],
+	};
 
-  const endTime = {
+	const endMoment = moment()
+		.set('hour', +endTime.hours)
+		.set('minute', +endTime.minutes)
+		.set('second', 0);
+	console.log(current.isBefore(moment(endMoment)));
 
-    hours: end.split(':')[0],
-    minutes: end.split(':')[1],
+	while (current.isBefore(endMoment)) {
+		result.push(current.format('HH:mm'));
+		current = moment(current).add(30, 'minutes');
+	}
 
-  }
-
-  const endMoment = moment().set( 'hour', +endTime.hours ).set('minute', +endTime.minutes).set('second', 0)
-  console.log( current.isBefore(moment( endMoment )) );
-  
-
-  while ( current.isBefore( endMoment ) ) {
-    
-    result.push(current.format('HH:mm'));
-    current = moment(current).add(15, 'minutes');
-
-  }
-
-  return result;
-
+	return result;
 }

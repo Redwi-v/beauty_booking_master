@@ -1,0 +1,180 @@
+.header {
+	display: flex;
+	gap: 16px;
+
+	align-items: center;
+
+	img {
+		border-radius: 50%;
+	}
+}
+
+.booking {
+	padding-bottom: 150px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	.block {
+		display: flex;
+		gap: 16px;
+		position: relative;
+	}
+
+	.time {
+		border-radius: 4px;
+		padding: 8px;
+		height: fit-content;
+
+		color: var(--color-stone-400);
+		background: var(--color-stone-200);
+		text-align: center;
+	}
+
+	.main_info {
+		padding: 4px;
+		padding-left: 16px;
+
+		border-left: 2px solid var(--color-blue);
+
+		.client {
+			span {
+				display: block;
+				margin-bottom: 2px;
+
+				font-weight: 400;
+				font-size: 14px;
+				color: var(--color-stone-400);
+			}
+
+			p {
+				font-weight: 400;
+				font-size: 18px;
+				line-height: 143%;
+			}
+		}
+	}
+
+	.services {
+		display: flex;
+		flex-direction: column;
+		margin-top: 16px;
+		gap: 16px;
+
+		.service_info {
+			padding-left: 20px;
+			display: flex;
+			gap: 24px;
+			margin-top: 6px;
+
+			.info_item {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				font-weight: 400;
+				font-size: 16px;
+				color: var(--color-stone-400);
+			}
+		}
+
+		.service_name {
+			padding-left: 20px;
+			position: relative;
+
+			font-weight: 400;
+			font-size: 16px;
+
+			&::after {
+				content: '';
+				display: block;
+
+				position: absolute;
+
+				width: 8px;
+				height: 8px;
+
+				background: var(--color-blue);
+				border-radius: 50%;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto 0;
+			}
+		}
+	}
+
+	.menu {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 24px;
+		height: 24px;
+
+		.menu_button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			gap: 4px;
+			background: none;
+			border: none;
+
+			width: 24px;
+			height: 24px;
+
+			span {
+				display: block;
+				width: 3px;
+				height: 3px;
+				border-radius: 50%;
+				background: var(--color-blue);
+			}
+		}
+	}
+}
+
+.time {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.not_found_title {
+	padding: 50px 0 150px 0;
+	text-align: center;
+	opacity: 0.6;
+}
+
+.date {
+	margin-top: 20px;
+	display: block;
+
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 143%;
+	text-transform: uppercase;
+	color: #6c6c6c;
+}
+
+.comment {
+
+  margin-top: 10px;
+
+  button {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+
+  .content {
+    margin-top: 10px;
+
+    span {
+      margin-bottom: 5px;
+    }
+  }
+
+}

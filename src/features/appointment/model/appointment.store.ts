@@ -1,85 +1,79 @@
 'use client'
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { SalonBranch } from '@/shared/api/booking/types';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface IAppointmentStore {
+	date: string | null;
+	time: string | null;
+	masterId: number | null;
+	services: number[];
 
-  date: string | null,
-  time: string | null
-  masterId: number | null
-  services: number[]
+	setDateAndTime: (date: string, time: string) => void;
+	setMasterId: (id: number) => void;
+	toggleServices: (id: number) => void;
+	clear: () => void;
 
-  setDateAndTime: ( date: string, time: string ) => void
-  setMasterId: ( id: number ) => void
-  toggleServices: ( id: number ) => void
-  clear: (  ) => void
-
+	branch: SalonBranch | null;
+	setSalonBranch: (value: SalonBranch) => void;
 }
 
 export const useAppointmentStore = create<IAppointmentStore>()(
+	persist(
+		(set, get) => ({
+			date: get()?.date || null,
+			time: get()?.time || null,
 
-  persist(
+			masterId: null,
 
-    (set, get ) => ({ 
-    
-      date:  get()?.date || null,
-      time: get()?.time || null,
+			services: [],
 
-      masterId: null,
+			branch: null,
+			setSalonBranch: branch => set(state => ({ branch: branch })),
 
-      services: [ ],
-      
-      
-      setMasterId: ( id ) => set(( state ) => ({
-    
-        masterId: id,
-    
-      })),
+			setMasterId: id =>
+				set(state => ({
+					masterId: id,
+				})),
 
-      setDateAndTime: ( date, time ) => set(( state ) => ({
-    
-        date,
-        time,
-    
-      })),
+			setDateAndTime: (date, time) =>
+				set(state => ({
+					date,
+					time,
+				})),
 
+			toggleServices: id =>
+				set(state => {
+					let activeServices = [...state.services];
 
-      toggleServices: ( id ) => set(( state ) => {
+					const isInclude = activeServices.includes(id);
 
-        let activeServices = [ ...state.services ]
+					activeServices = isInclude
+						? (activeServices = activeServices.filter(innerId => innerId !== id))
+						: [...activeServices, id];
 
-        const isInclude = activeServices.includes( id )
+					return {
+						services: activeServices,
+					};
+				}),
 
-        activeServices = isInclude ? activeServices = activeServices.filter( innerId => innerId !== id ) : [ ...activeServices, id ]
-        
-        return {
+			clear: () =>
+				set(state => ({
+					date: null,
+					time: null,
 
-          services: activeServices
+					masterId: null,
 
-        }
+					services: [],
+				})),
+		}),
 
-      }),
-
-      clear: ( ) => set(( state ) => ({
-    
-        date:   null,
-        time:  null,
-  
-        masterId: null,
-  
-        services: [ ],
-    
-      })),
-    
-    }),
-    
-    {
-      name: 'Appointment'
-    }
-
-  ),
-
-)
+		{
+			name: 'Appointment',
+			storage: createJSONStorage(() => sessionStorage),
+		},
+	),
+);
 
 
 interface IService   {
