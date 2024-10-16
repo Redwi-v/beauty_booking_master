@@ -18,14 +18,14 @@ const NoSalonUser: FC<INoSalonUserProps> = props => {
 			) : (
 				<span
 					onClick={() => {
-						clipboardCopy(String(WebApp.initDataUnsafe.user?.id));
+						clipboardCopy(String(typeof window !== 'undefined' && WebApp.initDataUnsafe.user?.id));
 						setIsCoped(true);
 						setTimeout(() => {
 							setIsCoped(false);
 						}, 1000);
 					}}
 				>
-					{WebApp.initDataUnsafe.user?.id}
+					{typeof window !== 'undefined' && WebApp.initDataUnsafe.user?.id}
 				</span>
 			)}
 		</div>

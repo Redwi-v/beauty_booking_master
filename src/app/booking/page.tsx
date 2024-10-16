@@ -21,7 +21,7 @@ import 'moment/locale/ru';
 import { Menu, MenuItem } from '@szhsin/react-menu';
 import { bookingApi } from '@/shared/api/booking';
 import { useRouter } from 'next/navigation';
-import { Booking } from '@/shared/api/masters/types';
+import { Booking as BookingType } from '@/shared/api/masters/types';
 interface IBookingProps {}
 
 const currentDate = new Date();
@@ -47,8 +47,9 @@ const Booking: FC<IBookingProps> = props => {
 	} = useAppointmentStore(state => state);
 
 	const { data: activeMaster, isFetching } = useQuery({
-		queryKey: ['ActiveMaster', WebApp.initDataUnsafe.user?.id],
-		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
+		queryKey: ['ActiveMaster', typeof window !== 'undefined' && WebApp.initDataUnsafe.user?.id],
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
 		onSuccess: data => {
 			setMasterId(data.data.id);
 		},
@@ -57,7 +58,11 @@ const Booking: FC<IBookingProps> = props => {
 	const [date, setDate] = useState(() => (stateDate ? new Date(stateDate) : new Date()));
 
 	const { data: activeBooking, refetch } = useQuery({
-		queryKey: ['ActiveMaster', WebApp.initDataUnsafe.user?.id, date],
+		queryKey: [
+			'ActiveMaster',
+			typeof window !== 'undefined' && WebApp.initDataUnsafe.user?.id,
+			date,
+		],
 		queryFn: () => mastersApi.getBookingByDate({ masterId: activeMaster?.data.id!, date: date }),
 		enabled: !!activeMaster?.data,
 	});
@@ -211,7 +216,7 @@ const Booking: FC<IBookingProps> = props => {
 };
 
 interface ICommentButtonProps {
-	item: Booking;
+	item: BookingType;
 }
 
 const CommentButton: FC<ICommentButtonProps> = props => {

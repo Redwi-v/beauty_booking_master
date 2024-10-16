@@ -69,7 +69,8 @@ export default function Page() {
 	// api
 	const { data: activeMaster } = useQuery({
 		queryKey: ['ActiveMaster'],
-		queryFn: () => mastersApi.getOneByTgId(+WebApp.initDataUnsafe.user?.id!),
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? +WebApp.initDataUnsafe.user?.id! : 0),
 		onSuccess: activeMaster => {
 			setValue('name', activeMaster.data.name);
 			setValue('last_name', activeMaster.data.lastName);

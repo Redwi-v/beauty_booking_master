@@ -4,7 +4,6 @@ import { Inter, Roboto } from 'next/font/google';
 import './_styles/globals.scss';
 import localFont from 'next/font/local';
 import Script from 'next/script';
-import { ClientRoot } from '@/widgets/client.root';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAppointmentStore } from '@/features/appointment/model/appointment.store';
 import { useEffect } from 'react';
@@ -49,8 +48,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 				<body className={`${roboto.variable} ${myFont.variable}`}>
 					<main className='content'>{children}</main>
 				</body>
-
-				<ClientRoot />
 			</QueryClientProvider>
 			<Script src='https://telegram.org/js/telegram-web-app.js'></Script>
 		</html>

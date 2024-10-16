@@ -25,6 +25,8 @@ ul {
 body,
 html {
  
+  scrollbar-width: thin;
+
   cursor: default;
   min-height: 100%;
   user-select: none;
@@ -38,6 +40,7 @@ html {
   background: var(--color-white) !important;
 
   font-family: var(--font-roboto);
+
 
 }
 

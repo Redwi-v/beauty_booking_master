@@ -17,9 +17,10 @@ export const Header: FC<HeaderProps> = ({ withBack }) => {
 	const router = useRouter();
 
 	const { data: activeMaster } = useQuery({
-		queryKey: ['activeMaster', !!WebApp.initDataUnsafe.user?.id],
-		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
-		enabled: !!WebApp.initDataUnsafe.user?.id,
+		queryKey: ['activeMaster', typeof window !== 'undefined' && !!WebApp.initDataUnsafe.user?.id],
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
+		enabled: typeof window !== 'undefined' && !!WebApp.initDataUnsafe.user?.id,
 	});
 
 	return (

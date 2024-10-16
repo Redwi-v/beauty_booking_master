@@ -58,10 +58,11 @@ const Page = () => {
 	};
 
 	const { data: activeMaster, refetch: refetchMaster } = useQuery({
-		queryKey: ['activeMaster', +WebApp.initDataUnsafe.user?.id!],
-		queryFn: () => mastersApi.getOneByTgId(+WebApp.initDataUnsafe.user?.id!),
+		queryKey: ['activeMaster', typeof window !== 'undefined' && +WebApp.initDataUnsafe.user?.id!],
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? +WebApp.initDataUnsafe.user?.id! : 0),
 		keepPreviousData: true,
-		enabled: !!WebApp.initDataUnsafe.user?.id,
+		enabled: typeof window !== 'undefined' && !!WebApp.initDataUnsafe.user?.id,
 		onSuccess: data => {
 			setActiveWorkingsDays(data.data.workingDays);
 			setValue('startShift', moment(data.data.startShift).format('HH:mm'));

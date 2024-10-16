@@ -8,7 +8,8 @@ import { useQuery } from 'react-query';
 export default function Home() {
 	const { data, isFetching } = useQuery({
 		queryKey: ['ActiveUser'],
-		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
 	});
 
 	const STUDIO_TEST_DATA = {

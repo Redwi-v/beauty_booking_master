@@ -17,7 +17,8 @@ const SpecialistPage: NextPage<SpecialistPageProps> = () => {
 
 	const { data, isFetching } = useQuery({
 		queryKey: ['ActiveUser'],
-		queryFn: () => mastersApi.getOneByTgId(WebApp.initDataUnsafe.user?.id!),
+		queryFn: () =>
+			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
 	});
 
 	

@@ -61,7 +61,7 @@ export const EntryConfirmView: FC<IEntryConfirmViewProps> = props => {
 			clientName: data.clientName,
 			clientPhone: data.clientPhone,
 			//@ts-ignore
-			clientTelegramId: String(WebApp.initDataUnsafe.user.id),
+			clientTelegramId: String(typeof window !== 'undefined' && WebApp.initDataUnsafe.user.id),
 			masterId: masterId!,
 			salonBranchId: activeMaster?.data.salonBranchId!,
 			salonId: activeMaster?.data.salonId!,
