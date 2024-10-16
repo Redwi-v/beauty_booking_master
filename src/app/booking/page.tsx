@@ -236,7 +236,7 @@ const CommentButton: FC<ICommentButtonProps> = props => {
 						{item.adminComment && (
 							<>
 								<span>Коментарй Админа:</span>
-								<p>{item.clientComment}</p>
+								<p>{item.adminComment}</p>
 							</>
 						)}
 
