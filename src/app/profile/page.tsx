@@ -21,7 +21,7 @@ const SpecialistPage: NextPage<SpecialistPageProps> = () => {
 			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
 	});
 
-	
+
 
 	return (
 		<div className={`${s.content}`}>
