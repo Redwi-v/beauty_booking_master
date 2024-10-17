@@ -14,7 +14,7 @@ export default function Home() {
 		queryFn: () =>
 			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
 		onSuccess: data => {
-			if (!data) return router.push('/no_salon_user');
+			if (!data.data) return router.push('/no_salon_user');
 		},
 		onError: data => {
 			router.push('/no_salon_user');
