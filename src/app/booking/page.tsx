@@ -91,7 +91,11 @@ const Booking: FC<IBookingProps> = props => {
 						alt='avatar'
 						width={32}
 						height={32}
-						src={getFileUrl(activeMaster?.data.avatar)}
+						src={
+							activeMaster?.data.avatar
+								? getFileUrl(activeMaster?.data.avatar)
+								: '/images/no_avatar.jpg'
+						}
 					/>
 					<h2 className='h2'>Запись клиентов</h2>
 				</div>
