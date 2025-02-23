@@ -4,13 +4,44 @@ export interface IGetServicesListPrams {
 }
 
 export interface IGetServicesRes {
-	list: List[];
-}
-
-export interface List {
-	tagName: string;
-	services: Service[];
-	_count: Count;
+  count: number
+  list: Array<{
+    id: number
+    serviceTagId: number
+    name: string
+    price: number
+    duration: number
+    bookingId: any
+    eventsId: any
+    bookingList: Array<any>
+    masterAccounts: Array<{
+      id: number
+      salonBranchId: number
+      rating: number
+      speciality: string
+      about: string
+      name: string
+      lastName: string
+      avatar: string
+      canChangeSchedule: boolean
+      canChangeBookingTime: boolean
+      telegramId: string
+    }>
+    serviceTag: {
+      id: number
+      salonId: number
+      name: string
+      services: Array<{
+        id: number
+        serviceTagId: number
+        name: string
+        price: number
+        duration: number
+        bookingId: any
+        eventsId: any
+      }>
+    }
+  }>
 }
 
 export interface Service {

@@ -94,18 +94,11 @@ const ListWithTabs = () => {
 	const { data, refetch } = useQuery({
 		queryKey: ['Services', masterId],
 		enabled: !!masterId,
-		queryFn: () => servicesApi.getList({ search: search, masterId: masterId! }),
+		queryFn: () => servicesApi.getList({ search: search || undefined, masterId: masterId! }),
 	});
 
 	const activeServices: Service[] = [];
 
-	services.forEach(id =>
-		data?.data?.list?.forEach(serviceTag =>
-			serviceTag.services.forEach(service => {
-				if (id === service.id) activeServices.push(service);
-			}),
-		),
-	);
 
 	const startMinutes = time && +time?.split(':')[0] * 60 + +time?.split(':')[1];
 
@@ -115,70 +108,72 @@ const ListWithTabs = () => {
 		refetch();
 	}, [isSearch]);
 
-	const isNotValid = (service: Service): boolean => {
-		if (!data?.data || !masterData?.data) return false;
+	// const isNotValid = (service: Service): boolean => {
+	// 	if (!data?.data || !masterData?.data) return false;
 
-		if (!date) return false;
+	// 	if (!date) return false;
 
-		let haveFreeTime = false;
+	// 	let haveFreeTime = false;
 
-		const maxWorkingTime =
-			+moment(masterData.data.endShift).format('HH:mm').split(':')[0] * 60 +
-			+moment(masterData.data.startShift).format('HH:mm').split(':')[1];
+	// 	const maxWorkingTime =
+	// 		+moment(masterData.data.endShift).format('HH:mm').split(':')[0] * 60 +
+	// 		+moment(masterData.data.startShift).format('HH:mm').split(':')[1];
 
-		let bookingEndTimeSteps: [number, number][] = [];
+	// 	let bookingEndTimeSteps: [number, number][] = [];
 
-		const activeDateBooking = masterData?.data.Booking.filter(booking => {
-			return moment(date).format('DD.MM.YYYY') === moment(booking.time).format('DD.MM.YYYY');
-		});
+	// 	const activeDateBooking = masterData?.data.Booking.filter(booking => {
+	// 		return moment(date).format('DD.MM.YYYY') === moment(booking.time).format('DD.MM.YYYY');
+	// 	});
 
-		activeDateBooking.forEach(booking => {
-			const bookingsStartTime =
-				+moment(booking.time).format('HH:mm').split(':')[0] * 60 +
-				+moment(booking.time).format('HH:mm').split(':')[1];
+	// 	activeDateBooking.forEach(booking => {
+	// 		const bookingsStartTime =
+	// 			+moment(booking.time).format('HH:mm').split(':')[0] * 60 +
+	// 			+moment(booking.time).format('HH:mm').split(':')[1];
 
-			const bookingEndTime = booking?.services?.reduce((prev, service) => {
-				return prev + service.time;
-			}, bookingsStartTime);
+	// 		const bookingEndTime = booking?.services?.reduce((prev, service) => {
+	// 			return prev + service.time;
+	// 		}, bookingsStartTime);
 
-			bookingEndTimeSteps.push([bookingsStartTime, bookingEndTime]);
-		});
+	// 		bookingEndTimeSteps.push([bookingsStartTime, bookingEndTime]);
+	// 	});
 
-		data?.data.list.forEach(tag => {
-			tag.services.forEach(serviceInTag => {
-				if (services.find(serviceId => serviceInTag.id === serviceId)) return;
+	// 	data?.data.list.forEach(service => {
+	// 		service..forEach(serviceInTag => {
+	// 			if (services.find(serviceId => serviceInTag.id === serviceId)) return;
 
-				const endMinutes = activeServices?.reduce((prev, service) => {
-					//@ts-ignore
-					return prev + service.time;
-				}, startMinutes);
+	// 			const endMinutes = activeServices?.reduce((prev, service) => {
+	// 				//@ts-ignore
+	// 				return prev + service.time;
+	// 			}, startMinutes);
 
-				//@ts-ignore
-				const plusOneMinutes = endMinutes + service.time;
+	// 			//@ts-ignore
+	// 			const plusOneMinutes = endMinutes + service.time;
 
-				if (plusOneMinutes > maxWorkingTime) {
-					haveFreeTime = false;
-				}
+	// 			if (plusOneMinutes > maxWorkingTime) {
+	// 				haveFreeTime = false;
+	// 			}
 
-				bookingEndTimeSteps.forEach(bookingTimeStep => {
-					if (
-						(plusOneMinutes >= bookingTimeStep[0] && plusOneMinutes <= bookingTimeStep[1]) ||
-						//@ts-ignore
-						(startMinutes <= bookingTimeStep[0] && plusOneMinutes >= bookingTimeStep[0])
-					)
-						return;
+	// 			bookingEndTimeSteps.forEach(bookingTimeStep => {
+	// 				if (
+	// 					(plusOneMinutes >= bookingTimeStep[0] && plusOneMinutes <= bookingTimeStep[1]) ||
+	// 					//@ts-ignore
+	// 					(startMinutes <= bookingTimeStep[0] && plusOneMinutes >= bookingTimeStep[0])
+	// 				)
+	// 					return;
 
-					haveFreeTime = false;
-				});
-			});
-		});
+	// 				haveFreeTime = false;
+	// 			});
+	// 		});
+	// 	});
 
-		console.log(haveFreeTime);
+	// 	console.log(haveFreeTime);
 
-		return haveFreeTime;
-	};
+	// 	return haveFreeTime;
+	// };
 
-	const onlyTabs = data?.data?.list && data.data.list.map(service => ({ tab: service.tagName }));
+	const onlyTags = data?.data?.list && Array.from(new Set(data.data.list.map(service => service.serviceTag.id)));
+	
+
 
 	return (
 		<div className={`${s.content}`}>
@@ -201,7 +196,7 @@ const ListWithTabs = () => {
 							onChange={e => setSearch(e.target.value)}
 						/>
 					</div>
-
+{/* 
 					<div className={s.tabs_wrapper}>
 						<div className={s.tabs}>
 							{onlyTabs &&
@@ -215,63 +210,69 @@ const ListWithTabs = () => {
 									</a>
 								))}
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 
 			<div className={s.list}>
 				{data?.data?.list &&
-					data.data.list.map((item, topIndex) => (
-						<>
-							<div key={item.tagName}>
-								<h1
-									className='h1'
-									id={item.tagName}
-								>
-									{item.tagName}
-								</h1>
-							</div>
+					onlyTags?.map((tagId, topIndex) => {
 
-							<ul className='mt-20'>
-								{item.services.map((service, index) => (
-									<li
-										className={`${s.item} ${
-											isNotValid(service) && !services.includes(service.id) && s.disable_item
-										}`}
-										key={index}
+						const serviceItem = data.data.list.find(item => item.serviceTag.id === tagId)
+
+						if ( !serviceItem ) return undefined
+
+						return (
+							<>
+								<div key={tagId}>
+									<h1
+										className='h1'
+										id={String(tagId)}
 									>
-										<p className={`${s.name} p`}>{service.name}</p>
+										{serviceItem.serviceTag.name}
+									</h1>
+								</div>
+	
+								<ul className='mt-20'>
+									{serviceItem.serviceTag.services.map((service, index) => (
+										<li
+											className={`${s.item}`}
+											key={index}
+										>
+											<p className={`${s.name} p`}>{service.name}</p>
+	
+											<div className={s.item_characteristics}>
+												<p className='p'>
+													<Image
+														src={'/icons/time.svg'}
+														width={24}
+														height={24}
+														alt='time'
+													/>
+													{moment().hours(0).minutes(service.duration).format('HH:mm')} ч
+												</p>
+												<p className='p'>
+													<Image
+														src={'/icons/ruble.svg'}
+														width={24}
+														height={24}
+														alt='time'
+													/>
+													{service.price}р
+												</p>
+											</div>
+	
+											<CheckBox
+												isActive={services.includes(service.id)}
+												onClick={() => toggleServices(service.id)}
+											/>
+										</li>
+									))}
+								</ul>
+							</>
+						)
 
-										<div className={s.item_characteristics}>
-											<p className='p'>
-												<Image
-													src={'/icons/time.svg'}
-													width={24}
-													height={24}
-													alt='time'
-												/>
-												{moment().hours(0).minutes(service.time).format('HH:mm')} ч
-											</p>
-											<p className='p'>
-												<Image
-													src={'/icons/ruble.svg'}
-													width={24}
-													height={24}
-													alt='time'
-												/>
-												{service.price}р
-											</p>
-										</div>
-
-										<CheckBox
-											isActive={services.includes(service.id)}
-											onClick={() => toggleServices(service.id)}
-										/>
-									</li>
-								))}
-							</ul>
-						</>
-					))}
+					})}
 			</div>
 		</div>
 	);

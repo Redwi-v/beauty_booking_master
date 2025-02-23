@@ -9,7 +9,6 @@ import {
 	TimeListPicker,
 } from '@/shared/ui';
 import { Controls } from '@/widgets/controls';
-import moment from 'moment';
 import { FC, useEffect, useState } from 'react';
 import s from './booking.module.scss';
 import Image from 'next/image';
@@ -22,6 +21,7 @@ import { Menu, MenuItem } from '@szhsin/react-menu';
 import { bookingApi } from '@/shared/api/booking';
 import { useRouter } from 'next/navigation';
 import { Booking as BookingType } from '@/shared/api/masters/types';
+import moment from 'moment';
 interface IBookingProps {}
 
 const currentDate = new Date();
@@ -89,8 +89,8 @@ const Booking: FC<IBookingProps> = props => {
 				<div className={s.header}>
 					<Image
 						alt='avatar'
-						width={32}
-						height={32}
+						width={42}
+						height={42}
 						src={
 							activeMaster?.data.avatar
 								? getFileUrl(activeMaster?.data.avatar)
@@ -116,12 +116,12 @@ const Booking: FC<IBookingProps> = props => {
 								<li className={s.booking_item}>
 									<div className={s.block}>
 										<div className={s.time}>
-											<span>{moment(item.time).locale('ru').format('HH:mm')}</span>
+											<span>{moment(item.duration).locale('ru').format('HH:mm')}</span>
 											<span className={s.duration}>
-												{moment(item.time)
+												{moment(item.duration)
 													.add({
 														minutes: item.services.reduce(
-															(prev, service) => prev + service.time,
+															(prev, service) => prev + service.duration,
 															0,
 														),
 													})
@@ -148,7 +148,7 @@ const Booking: FC<IBookingProps> = props => {
 																	src={'/icons/time.svg'}
 																/>
 																<span>
-																	{moment().hours(0).minutes(service.time).format('HH:mm')}ч
+																	{moment().hours(0).minutes(service.duration).format('HH:mm')}ч
 																</span>
 															</span>
 															<span className={s.info_item}>
@@ -237,22 +237,7 @@ const CommentButton: FC<ICommentButtonProps> = props => {
 					<div className={s.content}>
 						{item.clientComment && (
 							<>
-								<span>Коментарй клиента:</span>
 								<p>{item.clientComment}</p>
-							</>
-						)}
-
-						{item.adminComment && (
-							<>
-								<span>Коментарй Админа:</span>
-								<p>{item.adminComment}</p>
-							</>
-						)}
-
-						{item.masterComment && (
-							<>
-								<span>Ваш коментарй:</span>
-								<p>{item.masterComment}</p>
 							</>
 						)}
 					</div>

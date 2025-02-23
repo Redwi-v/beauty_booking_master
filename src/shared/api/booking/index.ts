@@ -3,14 +3,14 @@ import { ICreateBookingData, IGetBookingListRes } from './types';
 
 export const bookingApi = {
 	getListById(telegramId: string | number) {
-		return apiInstance.get<IGetBookingListRes[]>('/booking', { params: { telegramId } });
+		return apiInstance.get<IGetBookingListRes[]>('/events', { params: { telegramId } });
 	},
 
 	create(data: ICreateBookingData) {
-		return apiInstance.post('/booking', data);
+		return apiInstance.post('/events', data);
 	},
 
 	delete(id: number) {
-		return apiInstance.delete(`/booking/${id}`);
+		return apiInstance.delete(`/events/${id}`);
 	},
 };

@@ -141,9 +141,6 @@ const SpecialistPage: NextPage<SpecialistPageProps> = () => {
 						/>
 					</Link>
 				</div>
-
-				<p className='p'>e-mail</p>
-				<span>{data?.data.email}</span>
 			</div>
 		</div>
 	);

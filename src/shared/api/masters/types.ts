@@ -13,25 +13,37 @@ export interface IGetMastersRes {
 }
 
 export interface Master {
-	id: number;
-	name: string;
-	lastName: string;
-	email: string;
-	salonId: number;
-	salonBranchId: number;
-	rating: number;
-	speciality: string;
-	about: any;
-	avatar: any;
-	canChangeSchedule: boolean;
-	telegramId: string;
-	startShift: string;
-	endShift: string;
-	workingDays: string[];
-	salonBranch: SalonBranch;
-	Booking: Booking[];
-	masterService: MasterService[];
-	salon: Salon;
+  id: number
+  salonBranchId: number
+  rating: number
+  speciality: string
+  about: string
+  name: string
+  lastName: string
+  avatar: string
+  canChangeSchedule: boolean
+  canChangeBookingTime: boolean
+  telegramId: string
+  salonBranch: {
+    id: number
+    salonId: number
+    createdAt: string
+    updatedAt: string
+    isOpen: boolean
+    address: string
+    latitude: string
+    longitude: string
+    salon: {
+      id: number
+      adminAccountUserId: number
+      name: string
+      logoUrl: string
+      isOpen: boolean
+      description: string
+      createdAt: string
+      updatedAt: string
+    }
+  }
 }
 
 export interface SalonBranch {
@@ -49,21 +61,62 @@ export interface Address {
 }
 
 export interface Booking {
-	id: number;
-	createdAt: string;
-	updatedAt: string;
-	time: string;
-	masterAccountId: number;
-	status: string;
-	clientTelegramId: string;
-	clientName: string;
-	clientPhone: string;
-	clientComment?: string;
-	salonId: number;
-	salonBranchId: number;
-	services: Service[];
-	adminComment?: string;
-	masterComment?: string;
+  id: number
+  start: string
+  duration: number
+  title: string
+  description: string
+  masterAccountId: number
+  salonId: number
+  salonBranchId: number
+  clientNumber: string
+  clientName: string
+  clientLastName: string
+  clientComment: string
+  clientAccountId: any
+  client: any
+  master: {
+    id: number
+    salonBranchId: number
+    rating: number
+    speciality: string
+    about: string
+    name: string
+    lastName: string
+    avatar: string
+    canChangeSchedule: boolean
+    canChangeBookingTime: boolean
+    telegramId: string
+  }
+  salon: {
+    id: number
+    adminAccountUserId: number
+    name: string
+    logoUrl: string
+    isOpen: boolean
+    description: string
+    createdAt: string
+    updatedAt: string
+  }
+  salonBranch: {
+    id: number
+    salonId: number
+    createdAt: string
+    updatedAt: string
+    isOpen: boolean
+    address: string
+    latitude: string
+    longitude: string
+  }
+  services: Array<{
+    id: number
+    serviceTagId: number
+    name: string
+    price: number
+    duration: number
+    bookingId: any
+    eventsId: number
+  }>
 }
 
 export interface Service {
@@ -101,7 +154,7 @@ export interface IUpdateMasterBody {
 	servicesIdArray?: number[];
 	telegramId?: string;
 	salonBranchId?: number;
-	image?: File;
+	avatar?: File;
 	email?: string;
 	workingDays?: string[];
 	endShift?: Date;

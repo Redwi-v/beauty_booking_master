@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
 import { mastersApi } from '@/shared/api/masters';
 import { Header } from '@/widgets/header';
+import { masterScheduleApi } from '@/shared/api/master.schedule';
 
 interface ChooseDateViewProps {}
 
@@ -38,11 +39,7 @@ export const ChooseDateView: FC<ChooseDateViewProps> = () => {
 		queryKey: ['FreeTime', date, masterId, services],
 		enabled: !!masterId,
 		queryFn: () =>
-			mastersApi.getFreeTime({
-				date: date,
-				masterId: masterId!,
-				servicesIdList: services.map(item => String(item)),
-			}),
+			masterScheduleApi.getFreeTime(+masterId!, moment(date).format('YYYY.MM.DD')),
 	});
 
 	const { data: activeMaster } = useQuery({
@@ -74,7 +71,14 @@ export const ChooseDateView: FC<ChooseDateViewProps> = () => {
 			/>
 
 			<TimeListPicker
-				steps={freeTime?.data?.freeTime || []}
+				steps={freeTime?.map(time =>  {
+
+					const hours = Math.round(time / 60)
+					const minutes = time % 60
+
+					return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`
+
+				}) || []}
 				time={time}
 				setTime={setTime}
 			/>

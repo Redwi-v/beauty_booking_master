@@ -58,7 +58,7 @@ export default function Page() {
 			name,
 			lastName: last_name,
 			speciality: specialist,
-			image: image,
+			avatar: image,
 		};
 
 		updateMasterMutation.mutate(form);

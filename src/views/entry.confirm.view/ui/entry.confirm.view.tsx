@@ -27,6 +27,7 @@ interface IEntryConfirmViewProps {}
 type Inputs = {
 	clientComment: string;
 	clientName: string;
+	clientLastName: string;
 	clientPhone: string;
 };
 
@@ -57,17 +58,27 @@ export const EntryConfirmView: FC<IEntryConfirmViewProps> = props => {
 	});
 	const onSubmit: SubmitHandler<Inputs> = data => {
 		const form: ICreateBookingData = {
-			masterComment: data.clientComment,
+			clientComment: data.clientComment || '-',
+			clientLastName: data.clientLastName,
 			clientName: data.clientName,
-			clientPhone: data.clientPhone,
-			//@ts-ignore
-			clientTelegramId: String(typeof window !== 'undefined' && WebApp.initDataUnsafe.user.id),
-			masterId: masterId!,
-			salonBranchId: activeMaster?.data.salonBranchId!,
-			salonId: activeMaster?.data.salonId!,
-			servicesIdArray: services,
-			//@ts-ignore
-			time: moment(date).hours(+time.split(':')[0]).minutes(+time.split(':')[1]).toDate(),
+			clientNumber: data.clientPhone,
+			description: '',
+			duration: +time?.split(':')[0]! * 60 + +time?.split(':')[1]!,
+			masterId: activeMaster?.data?.id!,
+			salonBranch: activeMaster?.data?.salonBranch?.id!,
+			servicesIdArr: services,
+			start: moment(date).format('YYYY.MM.DD HH:mm'),
+			title: "Запись через мастера"
+			// clientName: data.clientName,
+			// clientPhone: data.clientPhone,
+			// //@ts-ignore
+			// clientTelegramId: String(typeof window !== 'undefined' && WebApp.initDataUnsafe.user.id),
+			// masterId: masterId!,
+			// salonBranchId: activeMaster?.data.salonBranchId!,
+			// salonId: activeMaster?.data?.salonBranch?.salonId!,
+			// servicesIdArray: services,
+			// //@ts-ignore
+			// time: moment(date).hours(+time.split(':')[0]).minutes(+time.split(':')[1]).toDate(),
 		};
 
 		createBookingMutation.mutate(form);
@@ -82,15 +93,13 @@ export const EntryConfirmView: FC<IEntryConfirmViewProps> = props => {
 	});
 
 	let selectedServices: Service[] = [];
-	servicesData?.data?.list?.forEach(item => {
-		item.services.forEach(service => {
-			if (services.includes(service.id)) selectedServices.push(service);
-		});
+	servicesData?.data?.list?.forEach(service => {
+		if (services.includes(service.id)) selectedServices.push(service);
 	});
 
 	const master = activeMaster?.data;
 	const totalMinutes = selectedServices.reduce((value, service) => {
-		return (value += service.time);
+		return (value += service.duration);
 	}, 0);
 
 	return (
@@ -180,6 +189,18 @@ export const EntryConfirmView: FC<IEntryConfirmViewProps> = props => {
 					required
 					inputProps={{
 						...register('clientName', { required: { value: true, message: 'Поле обязательное' } }),
+					}}
+				/>
+
+				<Input
+					title='Фамилия'
+					placeholder='Введите вашу фамилию'
+					error={errors?.clientLastName?.message}
+					required
+					inputProps={{
+						...register('clientLastName', {
+							required: { value: true, message: 'Поле обязательное' },
+						}),
 					}}
 				/>
 				<Input

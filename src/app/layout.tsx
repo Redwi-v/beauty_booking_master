@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAppointmentStore } from '@/features/appointment/model/appointment.store';
 import { useEffect } from 'react';
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
 
 const roboto = Roboto({
 	subsets: ['latin'],
@@ -44,11 +45,14 @@ const queryClient = new QueryClient();
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang='ru'>
-			<QueryClientProvider client={queryClient}>
-				<body className={`${roboto.variable} ${myFont.variable}`}>
-					<main className='content'>{children}</main>
-				</body>
+			<QueryClientProvider  client={queryClient}>
+				<ChakraProvider value={defaultSystem}>
+					<body className={`${roboto.variable} ${myFont.variable}`}>
+						<main className='content'>{children}</main>
+					</body>
+				</ChakraProvider>
 			</QueryClientProvider>
+
 			<Script src='https://telegram.org/js/telegram-web-app.js'></Script>
 		</html>
 	);

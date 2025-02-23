@@ -17,7 +17,7 @@ export const StartPreview: FC<StartPreviewProps> = ( { href, info } ) => {
 
   return (
 
-    <Link className={ `${ s.link } flex flex-col items-center` } href={ href } >
+    <div className={ `${ s.link } flex flex-col items-center` } >
 
       <Image className={ s.logo } quality={ 100 } width={ 80 } height={ 80 } src={ logo } alt={ name } />
 
@@ -42,7 +42,7 @@ export const StartPreview: FC<StartPreviewProps> = ( { href, info } ) => {
 
       </div>
 
-    </Link>
+    </div>
 
   );
 

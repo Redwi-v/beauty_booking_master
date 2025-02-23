@@ -5,21 +5,25 @@ import { HomeView } from '@/views/home';
 import WebApp from '@twa-dev/sdk';
 import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
+import { useEffect } from 'react';
 
 export default function Home() {
 	const router = useRouter();
 
-	const { data, isFetching } = useQuery({
+	const { data, isFetching, isSuccess , isLoading} = useQuery({
 		queryKey: ['ActiveUser'],
 		queryFn: () =>
 			mastersApi.getOneByTgId(typeof window !== 'undefined' ? WebApp.initDataUnsafe.user?.id! : 0),
-		onSuccess: data => {
-			if (!data.data) return router.push('/no_salon_user');
-		},
-		onError: data => {
-			router.push('/no_salon_user');
-		},
+
 	});
+
+	useEffect(() => {
+
+		if (isLoading ) return
+
+		if (isSuccess) router.push('/');
+		if ( !data?.data ) router.push('/no_salon_user');
+	}, [ data ])
 
 	const STUDIO_TEST_DATA = {
 		name: data?.data.name + ' ' + data?.data.lastName,

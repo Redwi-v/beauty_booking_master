@@ -23,6 +23,9 @@ export const Header: FC<HeaderProps> = ({ withBack }) => {
 		enabled: typeof window !== 'undefined' && !!WebApp.initDataUnsafe.user?.id,
 	});
 
+
+
+	if ( !activeMaster?.data ) return undefined
 	return (
 		<>
 			{
@@ -45,10 +48,9 @@ export const Header: FC<HeaderProps> = ({ withBack }) => {
 
 					<div className={`${s.main} ${withBack && s.withTop}`}>
 						<div className={s.info}>
-							<h1 className='h1'>{activeMaster?.data.salon.name}</h1>
+							<h1 className='h1'>{activeMaster?.data?.salonBranch?.salon.name}</h1>
 							<h3 className='h3'>
-								{activeMaster?.data?.salonBranch?.address?.city}{' '}
-								{activeMaster?.data?.salonBranch?.address?.address}
+								{activeMaster?.data?.salonBranch?.address}
 							</h3>
 						</div>
 

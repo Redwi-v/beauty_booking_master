@@ -48,7 +48,7 @@ export default function Page() {
 		queryFn: () =>
 			mastersApi.getOneByTgId(typeof window !== 'undefined' ? +WebApp.initDataUnsafe.user?.id! : 0),
 		onSuccess: activeMaster => {
-			setValue('email', activeMaster.data.email);
+			// setValue('email', activeMaster.data.email);
 			// setValue('number', activeMaster.data.)
 		},
 	});

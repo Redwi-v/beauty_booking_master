@@ -58,25 +58,45 @@ export interface SalonBranch {
 }
 
 export interface Service {
-	id: number;
-	price: number;
-	time: number;
-	name: string;
-	tagName: string;
-	salonId: number;
-	bookingId: number;
+  id: number
+  serviceTagId: number
+  name: string
+  price: number
+  duration: number
+  bookingId: any
+  eventsId: any
+  bookingList: Array<any>
+  masterAccounts: Array<{
+    id: number
+    salonBranchId: number
+    rating: number
+    speciality: string
+    about: string
+    name: string
+    lastName: string
+    avatar: string
+    canChangeSchedule: boolean
+    canChangeBookingTime: boolean
+    telegramId: string
+  }>
+  serviceTag: {
+    id: number
+    salonId: number
+    name: string
+		services: any[]
+  }
 }
 
 export interface ICreateBookingData {
-	masterId: number;
-	salonBranchId: number;
-	salonId: number;
-	clientComment?: string;
-	clientPhone: string;
-	clientName: string;
-	clientTelegramId: string;
-	servicesIdArray: number[];
-	time: Date;
-	masterComment?: string;
-	adminComment?: string;
+  start: string
+  duration: number
+  salonBranch: number
+  title: string
+  description: string
+  masterId: number
+  servicesIdArr: Array<number>
+  clientNumber: string
+  clientName: string
+  clientLastName: string
+  clientComment: string
 }
