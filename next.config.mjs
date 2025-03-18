@@ -10,8 +10,8 @@ const nextConfig = {
 
     //Dev
 
-    // API_URL: 'https://beauty-back.ru.tuna.am'
     API_URL: "https://api.mybeautybooking.ru",
+    // API_URL: 'https://beauty-back.ru.tuna.am'
 
 
   },
